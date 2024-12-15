@@ -1,3 +1,5 @@
+[![Symfony Tests with PHP 8.4](https://github.com/sergey-telpuk/symfony-playground/actions/workflows/ci.yml/badge.svg)](https://github.com/sergey-telpuk/symfony-playground/actions/workflows/ci.yml)
+
 Symfony Playground project:
 
 ---
