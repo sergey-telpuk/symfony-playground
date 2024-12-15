@@ -14,9 +14,9 @@ Follow the steps below to get your Symfony Playground up and running quickly.
 
 Make sure you have the following installed:
 
-- PHP
-- Composer
-- Make (optional, for convenience)
+- Docker
+- Docker compose
+- Make
 
 ### Installation
 
