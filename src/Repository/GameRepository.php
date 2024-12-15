@@ -39,21 +39,23 @@ class GameRepository extends ServiceEntityRepository implements GameRepositoryIn
      */
     public function findWinnerScore(GameTypeEnum $gameType, bool $reverse = false, int $count = 1000): iterable
     {
-        $order = $reverse ? 'DESC' : 'ASC';
-
         /**
          * @var $teams array{score:int,team_id:string}
          */
         $teams = $this->createQueryBuilder('g')
-            ->select('SUM(CASE WHEN g.winner = g.teamOne THEN g.teamOneScore ELSE g.teamTwoScore END) AS score')
+            ->select('SUM(g.teamOneScore) AS score')
             ->addSelect("(SELECT t.id FROM App\Entity\Team as t WHERE t.id = g.winner) AS team_id")
             ->andWhere('g.gameType = :game_type')
             ->setParameter('game_type', $gameType)
-            ->orderBy('score', $order)
+            ->orderBy('score', 'DESC')
             ->groupBy('g.winner')
             ->setMaxResults($count)
             ->getQuery()
             ->getResult();
+
+        if ($reverse) {
+            $teams = array_reverse($teams);
+        }
 
         $out = [];
         foreach ($teams as $item) {
