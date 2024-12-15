@@ -107,8 +107,10 @@ final class GameController extends AbstractController
         foreach ($playoffGames as $game) {
             $out['game_final'][] = [
                 'team_one_name' => $game->teamOne->name->value,
+                'team_one_score' => $game->teamOneScore,
                 'team_one_division' => $game->teamOne->division->value,
                 'team_two_name' => $game->teamTwo->name->value,
+                'team_two_score' => $game->teamTwoScore,
                 'team_two_division' => $game->teamTwo->division->value,
                 'score' => $game->teamOneScore . ':' . $game->teamTwoScore,
             ];

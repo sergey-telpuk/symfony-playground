@@ -1,0 +1,73 @@
+name: Symfony Tests with PHP 8.4
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: 123
+          POSTGRES_DB: app_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U app"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          extensions: mbstring, intl, pdo_pgsql, xdebug
+          tools: composer, symfony
+
+      - name: Install dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist --no-interaction
+
+      - name: Cache Symfony files
+        uses: actions/cache@v3
+        with:
+          path: var/cache
+          key: ${{ runner.os }}-symfony-cache-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-symfony-cache
+
+      - name: Set APP_ENV to test
+        run: echo "APP_ENV=test" >> $GITHUB_ENV
+
+      - name: Configure .env.test
+        run: |
+          cp .env.test .env.local
+          echo "DATABASE_URL=postgresql://app:123@127.0.0.1:5432/app_test" >> .env.local
+
+      - name: Run database migrations
+        env:
+          APP_ENV: test
+        run: php bin/console doctrine:migrations:migrate --no-interaction
+
+      - name: Load fixtures
+        env:
+          APP_ENV: test
+        run: php bin/console doctrine:fixtures:load --no-interaction
+
+      - name: Run tests with coverage
+        env:
+          APP_ENV: test
+          XDEBUG_MODE: coverage
+        run: |
+          php bin/phpunit --coverage-text --coverage-clover=coverage.xml
+
