@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div style="display: flex; gap: 20px;">
+        <p>You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a></p>
+    </div>
+
+    <div style="display: flex; gap: 20px;">
+        <p><a href="{{ path('play') }}">PLAY</a></p>
+    </div>
+
+    <h1 style="text-align: center; font-family: Arial, sans-serif; color: #333;">Football Tournament</h1>
+
+    <div style="display: flex; gap: 20px;">
+        <!-- Division A Table -->
+        <div style="flex: 1;">
+            <h2 style="font-family: Arial, sans-serif; color: #444; text-align: center;">Division A</h2>
+            <table
+                style="width: 100%; border-collapse: collapse; text-align: center; font-family: Arial, sans-serif; border: 2px solid #666;">
+                <thead>
+                <tr style="background-color: #ffffff;">
+                    <th style="padding: 3px 8px; border: 1px solid #666; font-weight: bold;">Team</th>
+                    {% for team in division_a %}
+                        <th style="padding: 5px; border: 1px solid #666; font-weight: bold;">{{ team.name }}</th>
+                    {% endfor %}
+                    <th style="padding: 5px; border: 1px solid #666; font-weight: bold;">Score</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for team1 in division_a %}
+                    <tr style="background-color: #ffffff;">
+                        <td style="padding: 3px 8px; border: 1px solid #666; font-weight: bold;">{{ team1.name }}</td>
+                        {% for team2 in division_a %}
+                            <td style="padding: 5px; border: 1px solid #666; background-color: {% if team1 == team2 %}#ddd{% else %}#fff{% endif %};">
+                                {% if team1 == team2 %}
+                                    -
+                                {% else %}
+                                    {{ game_division_a[team1.name ~ team2.name] ??"" }}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td style="padding: 5px; border: 1px solid #666;">{{ team1.score ?? 0 }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Division B Table -->
+        <div style="flex: 1;">
+            <h2 style="font-family: Arial, sans-serif; color: #444; text-align: center;">Division B</h2>
+            <table
+                style="width: 100%; border-collapse: collapse; text-align: center; font-family: Arial, sans-serif; border: 2px solid #666;">
+                <thead>
+                <tr style="background-color: #ffffff;">
+                    <th style="padding: 3px 8px; border: 1px solid #666; font-weight: bold;">Team</th>
+                    {% for team in division_b %}
+                        <th style="padding: 5px; border: 1px solid #666; font-weight: bold;">{{ team.name }}</th>
+                    {% endfor %}
+                    <th style="padding: 5px; border: 1px solid #666; font-weight: bold;">Score</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for team1 in division_b %}
+                    <tr style="background-color: #ffffff;">
+                        <td style="padding: 3px 8px; border: 1px solid #666; font-weight: bold;">{{ team1.name }}</td>
+                        {% for team2 in division_b %}
+                            <td style="padding: 5px; border: 1px solid #666; background-color: {% if team1 == team2 %}#ddd{% else %}#fff{% endif %};">
+                                {% if team1 == team2 %}
+                                    -
+                                {% else %}
+                                    {{ game_division_b[team1.name ~ team2.name] ??"" }}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td style="padding: 5px; border: 1px solid #666;">{{ team1.score ?? 0 }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Playoffs Bracket -->
+
+    <div style="font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 10px; color: #333;">
+        <h2 style="font-size: 1.8em; color: #333; border-bottom: 2px solid #e0e0e0; padding-bottom: 5px; margin-bottom: 15px;">
+            Playoffs</h2>
+        {% if game_playoff is not empty %}
+            {% for game in game_playoff %}
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; padding: 8px; margin: 8px 0; border-bottom: 1px solid #e0e0e0;">
+                    <p style="margin: 0; font-size: 0.9em; color: #333;"><strong>{{ game.team_one_name }}</strong>
+                        ({{ game.team_one_division }})</p>
+                    <p style="margin: 0; font-size: 1em; font-weight: bold;">{{ game.score }}</p>
+                    <p style="margin: 0; font-size: 0.9em; color: #333;"><strong>{{ game.team_two_name }}</strong>
+                        ({{ game.team_two_division }})</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center; color: #333; font-style: italic;">No playoff games available.</p>
+        {% endif %}
+
+        <h2 style="font-size: 1.8em; color: #333; margin-top: 30px;">Semifinal</h2>
+        {% if game_semifinal is not empty %}
+            {% for game in game_semifinal %}
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; padding: 8px; margin: 8px 0; border-bottom: 1px solid #e0e0e0;">
+                    <p style="margin: 0; font-size: 0.9em; color: #333;"><strong>{{ game.team_one_name }}</strong>
+                        ({{ game.team_one_division }})</p>
+                    <p style="margin: 0; font-size: 1em; font-weight: bold;">{{ game.score }}</p>
+                    <p style="margin: 0; font-size: 0.9em; color: #333;"><strong>{{ game.team_two_name }}</strong>
+                        ({{ game.team_two_division }})</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center; color: #333; font-style: italic;">No semifinal games available.</p>
+        {% endif %}
+
+        <h2 style="font-size: 1.8em; color: #333; margin-top: 30px;">Final</h2>
+        {% if game_final is not empty %}
+            {% for game in game_final %}
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; padding: 8px; margin: 8px 0; border-bottom: 1px solid #e0e0e0;">
+                    <p style="margin: 0; font-size: 0.9em; color: #333;"><strong>{{ game.team_one_name }}</strong>
+                        ({{ game.team_one_division }})</p>
+                    <p style="margin: 0; font-size: 1em; font-weight: bold;">{{ game.score }}</p>
+                    <p style="margin: 0; font-size: 0.9em; color: #333;"><strong>{{ game.team_two_name }}</strong>
+                        ({{ game.team_two_division }})</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center; color: #333; font-style: italic;">No final games available.</p>
+        {% endif %}
+
+        <h2 style="font-size: 1.8em; color: #333; margin-top: 30px;">Result</h2>
+        {% if result is not empty %}
+            {% for team in result %}
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; padding: 8px; margin: 8px 0; border-bottom: 1px solid #e0e0e0;">
+                    <p style="margin: 0; font-size: 0.9em; color: #333;"><strong>{{ team.team_name }}</strong></p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center; color: #333; font-style: italic;">No final games available.</p>
+        {% endif %}
+    </div>
+
+
+{% endblock %}
