@@ -1,20 +1,69 @@
-# symfony-playground
+Symfony Playground project:
 
-run
+---
+
+# Symfony Playground
+
+Welcome to the **Symfony Playground**, a vibrant environment for exploring and experimenting with Symfony frameworks!
+
+## Getting Started
+
+Follow the steps below to get your Symfony Playground up and running quickly.
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- PHP
+- Composer
+- Make (optional, for convenience)
+
+### Installation
+
+Clone the repository and navigate into the project directory:
 
 ```bash
-   make start
+git clone https://github.com/yourusername/symfony-playground.git
+cd symfony-playground
 ```
 
-open https://localhost/games
+Run the application:
 
-login: test@test.com
-password: 123
+```bash
+make start
+```
+
+### Accessing the Application
+
+Once the server is running, you can access the application by opening your web browser and navigating to:
+
+[http://localhost/games](http://localhost/games)
+
+### Login Credentials
+
+You can log in using the following credentials:
+
+- **Email:** test@test.com
+- **Password:** 123
+
+## Testing
+
+To ensure everything is functioning as expected, run the following commands:
+
+### Run Tests
 
 ```bash
 make test
 ```
 
+### Test Coverage
+
+To check the test coverage, execute:
+
 ```bash
 make test_coverage
 ```
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
