@@ -118,15 +118,16 @@
             <p style="text-align: center; color: #333; font-style: italic;">No semifinal games available.</p>
         {% endif %}
 
-        <h2 style="font-size: 1.8em; color: #333; margin-top: 30px;">Final</h2>
+        <h2 style="font-size: 1.8em; color: #333; margin-top: 30px;" class="final">Final</h2>
         {% if game_final is not empty %}
             {% for game in game_final %}
                 <div
                     style="display: flex; justify-content: space-between; align-items: center; padding: 8px; margin: 8px 0; border-bottom: 1px solid #e0e0e0;">
-                    <p style="margin: 0; font-size: 0.9em; color: #333;"><strong>{{ game.team_one_name }}</strong>
+                    <p class="{{ game.team_one_score > game.team_two_score ? 'winner': 'no_winner' }}"
+                       style="margin: 0; font-size: 0.9em; color: #333;"><strong>{{ game.team_one_name }}</strong>
                         ({{ game.team_one_division }})</p>
                     <p style="margin: 0; font-size: 1em; font-weight: bold;">{{ game.score }}</p>
-                    <p style="margin: 0; font-size: 0.9em; color: #333;"><strong>{{ game.team_two_name }}</strong>
+                    <p class="{{ game.team_one_score < game.team_two_score ? 'winner': 'no_winner' }}" style="margin: 0; font-size: 0.9em; color: #333;"><strong>{{ game.team_two_name }}</strong>
                         ({{ game.team_two_division }})</p>
                 </div>
             {% endfor %}

@@ -99,7 +99,6 @@ class GameRepository extends ServiceEntityRepository implements GameRepositoryIn
         return $out;
     }
 
-
     /**
      * @return array<Team>
      */
