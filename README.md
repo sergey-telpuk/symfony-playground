@@ -25,7 +25,7 @@ Make sure you have the following installed:
 Clone the repository and navigate into the project directory:
 
 ```bash
-git clone https://github.com/yourusername/symfony-playground.git
+git clone https://github.com/sergey-telpuk/symfony-playground.git
 cd symfony-playground
 ```
 
