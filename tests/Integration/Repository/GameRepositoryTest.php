@@ -90,7 +90,7 @@ class GameRepositoryTest extends KernelTestCase
 
             foreach ($winners as ['score' => $score, 'team' => $gotWinner]) {
                 $this->assertInstanceOf(Team::class, $winner);
-                $this->assertFalse($winner->equal($gotWinner));
+                $this->assertTrue($winner->equal($gotWinner));
             }
         }
     }
@@ -191,8 +191,8 @@ class GameRepositoryTest extends KernelTestCase
             $game->id = Uuid::v4();
             $game->teamOne = $teamOne;
             $game->teamTwo = $teamTwo;
-            $game->winner = $teamTwo;
-            $game->teamTwoScore = 1;
+            $game->winner = $teamOne;
+            $game->teamOneScore = 1;
             $game->playedAt = new \DateTimeImmutable();
             $game->gameType = $gameType;
             yield ['game' => $game, 'team_one' => $game->teamOne, 'team_two' => $game->teamTwo, 'winner' => $game->winner];
